@@ -9,49 +9,69 @@
             </span>
         </header>
         <main 
-            class="layout u-fill u-box u-box--column u-box--align-center ">
-            <div class="row-tile u-box">
-                <tile 
-                    class="pointer"
-                    @click.native="onFlipTile('r1c1')"
-                    :type="r1c1"></tile>
-                <tile 
-                    class="pointer"
-                    @click.native="onFlipTile('r1c2')"
-                    :type="r1c2"></tile>
-                <tile 
-                    class="pointer"
-                    @click.native="onFlipTile('r1c3')"
-                    :type="r1c3"></tile>
+            class="layout u-box u-box--align-center">
+            <div class="wrap-board u-relative u-box--inline">
+                <div class="strikethrough u-absolute-full u-box u-box--justify-center u-box--align-center u-events--none">
+                    <div 
+                        v-if="winner && !checkDraw"
+                        class="strikethrough-line"
+                        :class="{ 
+                            '--row1': strikethroughRow1, 
+                            '--row2': strikethroughRow2, 
+                            '--row3': strikethroughRow3,
+                            '--col1': strikethroughCol1, 
+                            '--col2': strikethroughCol2, 
+                            '--col3': strikethroughCol3,
+                            '--diagR1C1_R3C3': strikethroughR1C1_R3C3,
+                            '--diagR3C1_R1C3': strikethroughR3C1_R1C3
+                                }"></div>
+                </div>
+                <section class="board u-box--inline u-box--column">
+                    <div class="row-tile u-box">
+                        <tile 
+                            class="pointer"
+                            @click.native="onFlipTile('r1c1')"
+                            :type="r1c1"></tile>
+                        <tile 
+                            class="pointer"
+                            @click.native="onFlipTile('r1c2')"
+                            :type="r1c2"></tile>
+                        <tile 
+                            class="pointer"
+                            @click.native="onFlipTile('r1c3')"
+                            :type="r1c3"></tile>
+                    </div>
+                    <div class="row-tile u-box">
+                        <tile 
+                            class="pointer"
+                            @click.native="onFlipTile('r2c1')"
+                            :type="r2c1"></tile>
+                        <tile 
+                            class="pointer"
+                            @click.native="onFlipTile('r2c2')"
+                            :type="r2c2"></tile>
+                        <tile 
+                            class="pointer"
+                            @click.native="onFlipTile('r2c3')"
+                            :type="r2c3"></tile>
+                    </div>
+                    <div class="row-tile u-box">
+                        <tile 
+                            class="pointer"
+                            @click.native="onFlipTile('r3c1')"
+                            :type="r3c1"></tile>
+                        <tile 
+                            class="pointer"
+                            @click.native="onFlipTile('r3c2')"
+                            :type="r3c2"></tile>
+                        <tile 
+                            class="pointer"
+                            @click.native="onFlipTile('r3c3')"
+                            :type="r3c3"></tile>
+                    </div>
+                </section>
             </div>
-            <div class="row-tile u-box">
-                <tile 
-                    class="pointer"
-                    @click.native="onFlipTile('r2c1')"
-                    :type="r2c1"></tile>
-                <tile 
-                    class="pointer"
-                    @click.native="onFlipTile('r2c2')"
-                    :type="r2c2"></tile>
-                <tile 
-                    class="pointer"
-                    @click.native="onFlipTile('r2c3')"
-                    :type="r2c3"></tile>
-            </div>
-            <div class="row-tile u-box">
-                <tile 
-                    class="pointer"
-                    @click.native="onFlipTile('r3c1')"
-                    :type="r3c1"></tile>
-                <tile 
-                    class="pointer"
-                    @click.native="onFlipTile('r3c2')"
-                    :type="r3c2"></tile>
-                <tile 
-                    class="pointer"
-                    @click.native="onFlipTile('r3c3')"
-                    :type="r3c3"></tile>
-            </div>
+            
         </main>
         <footer class="u-box u-box--justify-center">
 
@@ -173,6 +193,53 @@
                 set (value) {
                     this.$store.dispatch("SET_R3C3", value)
                 }
+            },
+
+            // strikethrough Row
+            strikethroughRow1 () {
+                let row1x = this.sameLine(this.r1c1, this.r1c2, this.r1c3, 'cross')
+                let row1o = this.sameLine(this.r1c1, this.r1c2, this.r1c3, 'circle')
+                return Boolean(row1x || row1o)
+            },
+            strikethroughRow2 () {
+                let row2x = this.sameLine(this.r2c1, this.r2c2, this.r2c3, 'cross')
+                let row2o = this.sameLine(this.r2c1, this.r2c2, this.r2c3, 'circle')
+                return Boolean(row2x || row2o)
+            },
+            strikethroughRow3 () {
+                let row3x = this.sameLine(this.r3c1, this.r3c2, this.r3c3, 'cross')
+                let row3o = this.sameLine(this.r3c1, this.r3c2, this.r3c3, 'circle')
+                return Boolean(row3x || row3o)
+            },
+
+            // strikethrough Col
+            strikethroughCol1 () {
+                let col1x = this.sameLine(this.r1c1, this.r2c1, this.r3c1, 'cross')
+                let col1o = this.sameLine(this.r1c1, this.r2c1, this.r3c1, 'circle')
+                return Boolean(col1x || col1o)
+            },
+            strikethroughCol2 () {
+                let col2x = this.sameLine(this.r1c2, this.r2c2, this.r3c2, 'cross')
+                let col2o = this.sameLine(this.r1c2, this.r2c2, this.r3c2, 'circle')
+                return Boolean(col2x || col2o)
+            },
+            strikethroughCol3 () {
+                let col3x = this.sameLine(this.r1c3, this.r2c3, this.r3c3, 'cross')
+                let col3o = this.sameLine(this.r1c3, this.r2c3, this.r3c3, 'circle')
+                return Boolean(col3x || col3o)
+            },
+
+            
+            // strikethrough Diagonal
+            strikethroughR1C1_R3C3 () {
+                let diagX = this.sameLine(this.r1c1, this.r2c2, this.r3c3, 'cross')
+                let diagO = this.sameLine(this.r1c1, this.r2c2, this.r3c3, 'circle')
+                return Boolean(diagX || diagO)
+            },
+            strikethroughR3C1_R1C3 () {
+                let diagX = this.sameLine(this.r3c1, this.r2c2, this.r1c3, 'cross')
+                let diagO = this.sameLine(this.r3c1, this.r2c2, this.r1c3, 'circle')
+                return Boolean(diagX || diagO)
             },
 
             checkDraw () {

@@ -48,3 +48,54 @@
 .pointer {
     cursor: pointer;
 }
+
+.strikethrough {
+    &-line {
+        height: 8px;
+        border-radius: 4px;
+        background-color: green;
+        width: 100%;
+
+        &.--row1 {
+            margin-bottom: 70%;
+        }
+        &.--row2 {
+            margin-bottom: 3%;
+        }
+        &.--row3 {
+            margin-bottom: -65%;
+        }
+
+        &.--col1 {
+            position: relative;
+            left: -34.5%;
+            transform: rotate(90deg);
+            margin-bottom: 3%;
+        }
+
+        &.--col2 {
+            position: relative;
+            transform: rotate(90deg);
+            margin-bottom: 3%;
+        }
+
+        &.--col3 {
+            position: relative;
+            right: -34.5%;
+            transform: rotate(90deg);
+            margin-bottom: 3%;
+        }
+        &.--diagR1C1_R3C3 {
+            transform: rotate(45deg);
+            margin-bottom: 3%;
+        }
+        &.--diagR3C1_R1C3 {
+            transform: rotate(-45deg);
+            margin-bottom: 3%;
+        }
+    }
+}
+.wrap-board,
+.board {
+    margin: 0 auto;
+}
