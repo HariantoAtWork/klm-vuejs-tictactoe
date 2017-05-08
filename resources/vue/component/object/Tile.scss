@@ -1,0 +1,12 @@
+.tile {
+	box-sizing: border-box;
+	background-color: #2D447F;
+	width: 100px;
+	height: 100px;
+	color: #5A88FF;
+	font-size: 30px;
+
+	&:not(:last-child) {
+		margin-right: 10px;
+	}
+}
